@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import BarraSesion from './components/BarraSesion/BarraSesion'
 import Bienvenida from './components/Bienvenida/Bienvenida'
+import InformacionVisual from './components/InformacionVisual/InformacionVisual'
 import InicioSesion from './components/InicioSesion/InicioSesion'
 import PanelRegistros from './components/PanelRegistros/PanelRegistros'
 import { moduloAspectos } from './config/aspectos'
@@ -78,7 +79,7 @@ const MATRICES_RIESGOS = {
 }
 
 type MatrizRiesgos = keyof typeof MATRICES_RIESGOS
-type Vista = 'inicio' | 'riesgos' | 'oportunidades' | 'aspectos' | MatrizRiesgos
+type Vista = 'inicio' | 'riesgos' | 'oportunidades' | 'aspectos' | 'informacion' | MatrizRiesgos
 
 const esMatrizRiesgos = (v: Vista): v is MatrizRiesgos => v in MATRICES_RIESGOS
 
@@ -128,6 +129,8 @@ function App() {
     }
 
     switch (vista) {
+      case 'informacion':
+        return <InformacionVisual onVolver={ir('inicio')} publicados={!editable} />
       case 'riesgos':
         return (
           <Bienvenida
@@ -167,6 +170,7 @@ function App() {
             titulo="Sistema de Gestión Integral"
             opciones={[
               { titulo: 'Matriz de Riesgos', onAbrir: ir('riesgos') },
+              { titulo: 'Información Visual', onAbrir: ir('informacion') },
               { titulo: 'Evaluación de Oportunidades', onAbrir: ir('oportunidades') },
               { titulo: 'Matriz de Aspectos e Impactos Ambientales', onAbrir: ir('aspectos') },
             ]}

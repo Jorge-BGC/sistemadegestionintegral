@@ -1,5 +1,6 @@
 import { escala, matriz, nombres, rangos } from './catalogos'
 import { tablaRegistros } from './registros'
+import { supabase } from './supabase'
 import type { CatalogosRiesgos, Riesgo, RiesgoInput } from '../types/riesgos'
 
 const COLUMNAS =
@@ -8,6 +9,22 @@ const COLUMNAS =
 // Riesgos de un solo proceso
 export const tablaRiesgos = (proceso: string) =>
   tablaRegistros<Riesgo, RiesgoInput>('riesgos', COLUMNAS, { proceso })
+
+// Todos los riesgos sirven para el resumen visual de la matriz.
+export async function listarTodosRiesgos(publicados: boolean): Promise<Riesgo[]> {
+  const origen = publicados ? 'riesgos_publicados' : 'riesgos'
+  const { data, error } = await supabase.from(origen).select(COLUMNAS).order('id')
+  if (error) throw new Error(`Tabla "${origen}": ${error.message}`)
+  return data as unknown as Riesgo[]
+}
+
+export async function cargarDatosVisuales() {
+  const [mat, evaluacion] = await Promise.all([
+    matriz('matriz_riesgo', 'severidad', 'probabilidad'),
+    rangos('evaluacion_riesgos'),
+  ])
+  return { matriz: mat, evaluacion }
+}
 
 // tablaActividades: catálogo de actividades del proceso (actividad_riesgos_gc, actividad_riesgos_meps, …)
 export async function cargarCatalogosRiesgos(tablaActividades: string): Promise<CatalogosRiesgos> {
