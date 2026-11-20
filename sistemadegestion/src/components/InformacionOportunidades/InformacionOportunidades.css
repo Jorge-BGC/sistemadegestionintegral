@@ -1,0 +1,40 @@
+/* Con un enfoque filtrado, "¿De dónde surgen?" se queda sola en su fila */
+.informacion-oportunidades-ancha {
+  grid-column: 1 / -1;
+}
+
+.informacion-oportunidades-beneficios {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text);
+}
+
+/* La vigencia lleva una marca de color además del texto (vencida / por vencer) */
+.informacion-oportunidades-vigencia {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.informacion-oportunidades-vigencia::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--estado-neutro);
+}
+
+.informacion-oportunidades-vigencia.vigente::before {
+  background: var(--estado-bien);
+}
+
+.informacion-oportunidades-vigencia.porvencer::before {
+  background: var(--estado-proceso);
+}
+
+.informacion-oportunidades-vigencia.vencida::before {
+  background: var(--estado-mal);
+}

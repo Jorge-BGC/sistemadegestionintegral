@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import BarraSesion from './components/BarraSesion/BarraSesion'
 import Bienvenida from './components/Bienvenida/Bienvenida'
 import Confirmacion from './components/Confirmacion/Confirmacion'
-import InformacionAspectos from './components/InformacionAspectos/InformacionAspectos'
-import InformacionRiesgos from './components/InformacionRiesgos/InformacionRiesgos'
 import InicioSesion from './components/InicioSesion/InicioSesion'
 import PanelRegistros from './components/PanelRegistros/PanelRegistros'
 import { MATRICES_ASPECTOS, type MatrizAspectos } from './config/aspectos'
@@ -13,13 +11,20 @@ import { usePublicacion } from './hooks/usePublicacion'
 import { useSesion } from './hooks/useSesion'
 import { cerrarSesion } from './services/sesion'
 
-// Menús: inicio → riesgos (submenú, con Información Visual al final) / ambiental (submenú)
+// Los paneles de Información Visual se descargan solo cuando alguien los abre (aligera la carga inicial)
+const InformacionRiesgos = lazy(() => import('./components/InformacionRiesgos/InformacionRiesgos'))
+const InformacionAspectos = lazy(() => import('./components/InformacionAspectos/InformacionAspectos'))
+const InformacionOportunidades = lazy(() => import('./components/InformacionOportunidades/InformacionOportunidades'))
+
+// Menús: inicio → riesgos / oportunidades / ambiental (submenús, con Información Visual al final)
 type Vista =
   | 'inicio'
   | 'riesgos'
   | 'informacion'
   | 'informacion_aspectos'
+  | 'oportunidades_menu'
   | 'oportunidades'
+  | 'informacion_oportunidades'
   | 'ambiental'
   | MatrizRiesgos
   | MatrizAspectos
@@ -120,13 +125,24 @@ function App() {
         )
       case 'informacion_aspectos':
         return <InformacionAspectos onVolver={ir('ambiental')} publicados={!editable} />
+      case 'oportunidades_menu':
+        return (
+          <Bienvenida
+            titulo="Evaluación de Oportunidades"
+            onVolver={ir('inicio')}
+            opciones={[{ titulo: 'Tabla', onAbrir: ir('oportunidades') }]}
+            secundarias={[{ titulo: 'Información Visual', onAbrir: ir('informacion_oportunidades') }]}
+          />
+        )
+      case 'informacion_oportunidades':
+        return <InformacionOportunidades onVolver={ir('oportunidades_menu')} publicados={!editable} />
       case 'oportunidades':
         return (
           <PanelRegistros
             key={vista}
             titulo="Evaluación de Oportunidades"
             modulo={moduloOportunidades}
-            onVolver={ir('inicio')}
+            onVolver={ir('oportunidades_menu')}
             editable={editable}
             onCambio={publicacion.revisar}
           />
@@ -137,7 +153,7 @@ function App() {
             titulo="Sistema de Gestión Integral"
             opciones={[
               { titulo: 'Matriz de Riesgos', onAbrir: ir('riesgos') },
-              { titulo: 'Evaluación de Oportunidades', onAbrir: ir('oportunidades') },
+              { titulo: 'Evaluación de Oportunidades', onAbrir: ir('oportunidades_menu') },
               { titulo: 'Matriz de Aspectos e Impactos Ambientales', onAbrir: ir('ambiental') },
             ]}
           />
@@ -147,7 +163,7 @@ function App() {
 
   return (
     <>
-      {pantalla()}
+      <Suspense fallback={<p className="cargando-pantalla">Cargando…</p>}>{pantalla()}</Suspense>
       {editor && (
         <BarraSesion
           editor={editor}

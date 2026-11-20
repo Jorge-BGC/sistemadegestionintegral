@@ -12,8 +12,8 @@ export type FilaGrupo = {
 type Props = {
   niveles: readonly Categoria[]
   filas: FilaGrupo[]
-  // Clic en un grupo: filtra el panel por él
-  onElegir: (clave: string) => void
+  // Clic en un grupo: filtra el panel por él. Sin onElegir, los nombres son solo texto
+  onElegir?: (clave: string) => void
   textoVacio?: string
 }
 
@@ -26,15 +26,21 @@ function NivelesPorGrupo({ niveles, filas, onElegir, textoVacio = 'Sin registros
     <ul className="niveles-grupo">
       {ordenadas.map((f) => (
         <li key={f.clave}>
-          <button
-            type="button"
-            className="niveles-grupo-nombre"
-            onClick={() => onElegir(f.clave)}
-            title={`Ver solo ${f.etiqueta}`}
-            disabled={f.total === 0}
-          >
-            {f.etiqueta}
-          </button>
+          {onElegir ? (
+            <button
+              type="button"
+              className="niveles-grupo-nombre"
+              onClick={() => onElegir(f.clave)}
+              title={`Ver solo ${f.etiqueta}`}
+              disabled={f.total === 0}
+            >
+              {f.etiqueta}
+            </button>
+          ) : (
+            <span className="niveles-grupo-nombre" title={f.etiqueta}>
+              {f.etiqueta}
+            </span>
+          )}
           <span className="niveles-grupo-pista" style={{ width: `${(f.total / maximo) * 100}%` }}>
             {niveles
               .filter(({ clave }) => (f.niveles[clave] ?? 0) > 0)

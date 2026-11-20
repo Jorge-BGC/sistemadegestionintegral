@@ -80,8 +80,7 @@
 .panel-visual-bloques {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  gap: 18px;
+  gap: 24px;
 }
 
 .panel-visual-bloques h3 {

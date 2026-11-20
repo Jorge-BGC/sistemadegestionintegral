@@ -26,17 +26,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--text-h);
-  cursor: pointer;
 }
 
-.niveles-grupo-nombre:hover:not(:disabled) {
+button.niveles-grupo-nombre:hover:not(:disabled) {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 /* Sin riesgos: nombre atenuado y sin acción */
-.niveles-grupo-nombre:disabled {
+button.niveles-grupo-nombre:disabled {
   opacity: 1;
   color: var(--text);
   cursor: default;
@@ -81,4 +80,8 @@
     grid-row: 2;
     grid-column: 1 / -1;
   }
+}
+
+button.niveles-grupo-nombre {
+  cursor: pointer;
 }
