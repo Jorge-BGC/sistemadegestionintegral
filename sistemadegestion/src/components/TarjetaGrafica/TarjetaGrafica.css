@@ -1,0 +1,40 @@
+.tarjeta-grafica {
+  min-width: 0;
+  padding: 18px 20px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.tarjeta-grafica-encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
+.tarjeta-grafica-encabezado h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.tarjeta-grafica-encabezado p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* El contenido ocupa la altura sobrante cuando dos tarjetas comparten fila */
+.tarjeta-grafica {
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta-grafica > :last-child {
+  flex: 1;
+}

@@ -1,0 +1,45 @@
+.barras-conteo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Etiqueta en su propia línea (los nombres de aspectos son largos); barra y cifra debajo */
+.barras-conteo li {
+  display: grid;
+  grid-template-columns: 1fr 32px;
+  gap: 4px 10px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.barras-conteo-etiqueta {
+  grid-column: 1 / -1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-h);
+}
+
+.barras-conteo-pista {
+  height: 10px;
+  border-radius: 0 4px 4px 0;
+  background: var(--group-bg);
+}
+
+.barras-conteo-barra {
+  display: block;
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background: var(--accent);
+}
+
+.barras-conteo b {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-h);
+}

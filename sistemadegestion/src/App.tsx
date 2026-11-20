@@ -1,87 +1,31 @@
 import { useEffect, useState } from 'react'
 import BarraSesion from './components/BarraSesion/BarraSesion'
 import Bienvenida from './components/Bienvenida/Bienvenida'
-import InformacionVisual from './components/InformacionVisual/InformacionVisual'
+import Confirmacion from './components/Confirmacion/Confirmacion'
+import InformacionAspectos from './components/InformacionAspectos/InformacionAspectos'
+import InformacionRiesgos from './components/InformacionRiesgos/InformacionRiesgos'
 import InicioSesion from './components/InicioSesion/InicioSesion'
 import PanelRegistros from './components/PanelRegistros/PanelRegistros'
-import { moduloAspectos } from './config/aspectos'
+import { MATRICES_ASPECTOS, type MatrizAspectos } from './config/aspectos'
 import { moduloOportunidades } from './config/oportunidades'
-import { crearModuloRiesgos } from './config/riesgos'
+import { MATRICES_RIESGOS, type MatrizRiesgos } from './config/matricesRiesgos'
 import { usePublicacion } from './hooks/usePublicacion'
 import { useSesion } from './hooks/useSesion'
 import { cerrarSesion } from './services/sesion'
 
-// Matrices de riesgos por proceso: mismo dashboard, cambia el proceso y su catálogo de actividades.
-// Para agregar un proceso basta otra entrada aquí. Se crean una sola vez, fuera del componente,
-// porque el dashboard recarga datos cuando cambia el módulo.
-const MATRICES_RIESGOS = {
-  meps: {
-    titulo: 'Manufactura EPS',
-    modulo: crearModuloRiesgos('Manufactura EPS', 'actividad_riesgos_meps'),
-  },
-  epc: {
-    titulo: 'Entrega de Producto al Cliente',
-    modulo: crearModuloRiesgos('Entrega de Producto al Cliente', 'actividad_riesgos_epc'),
-  },
-  dt: {
-    titulo: 'Desarrollo Tecnológico',
-    modulo: crearModuloRiesgos('Desarrollo Tecnológico', 'actividad_riesgos_dt'),
-  },
-  pc: {
-    titulo: 'Programación de la Cadena',
-    modulo: crearModuloRiesgos('Programación de la Cadena', 'actividad_riesgos_pc'),
-  },
-  ceps: {
-    titulo: 'Comercialización EPS',
-    modulo: crearModuloRiesgos('Comercialización EPS', 'actividad_riesgos_ceps'),
-  },
-  gvc: {
-    titulo: 'Generación de Valor Clientes',
-    modulo: crearModuloRiesgos('Generación de Valor Clientes', 'actividad_riesgo_gvc'),
-  },
-  ti: {
-    titulo: 'TI',
-    modulo: crearModuloRiesgos('TI', 'actividad_riesgos_ti'),
-  },
-  ap: {
-    titulo: 'Admon Proyectos',
-    modulo: crearModuloRiesgos('Admon Proyectos', 'actividad_riesgo_ap'),
-  },
-  m: {
-    titulo: 'Mantenimiento',
-    modulo: crearModuloRiesgos('Mantenimiento', 'actividad_riesgos_m'),
-  },
-  cs: {
-    titulo: 'Cadena de Suministro',
-    // En procesos_riesgos se llama "Cadena Suministro"
-    modulo: crearModuloRiesgos('Cadena Suministro', 'actividad_riesgos_cs'),
-  },
-  ch: {
-    titulo: 'Capital Humano',
-    modulo: crearModuloRiesgos('Capital Humano', 'actividad_riesgos_ch'),
-  },
-  af: {
-    titulo: 'Administración Financiera',
-    modulo: crearModuloRiesgos('Administración Financiera', 'actividad_riesgos_af'),
-  },
-  mash: {
-    titulo: 'MASH',
-    modulo: crearModuloRiesgos('MASH', 'actividad_riesgos_mash'),
-  },
-  calidad: {
-    titulo: 'Gestión de Calidad',
-    modulo: crearModuloRiesgos('Gestión de Calidad', 'actividad_riesgos_gc'),
-  },
-  sesg: {
-    titulo: 'Sustentabilidad & ESG',
-    modulo: crearModuloRiesgos('Sustentabilidad & ESG', 'actividad_riesgos_sesg'),
-  },
-}
-
-type MatrizRiesgos = keyof typeof MATRICES_RIESGOS
-type Vista = 'inicio' | 'riesgos' | 'oportunidades' | 'aspectos' | 'informacion' | MatrizRiesgos
+// Menús: inicio → riesgos (submenú, con Información Visual al final) / ambiental (submenú)
+type Vista =
+  | 'inicio'
+  | 'riesgos'
+  | 'informacion'
+  | 'informacion_aspectos'
+  | 'oportunidades'
+  | 'ambiental'
+  | MatrizRiesgos
+  | MatrizAspectos
 
 const esMatrizRiesgos = (v: Vista): v is MatrizRiesgos => v in MATRICES_RIESGOS
+const esMatrizAspectos = (v: Vista): v is MatrizAspectos => v in MATRICES_ASPECTOS
 
 // Acceso discreto de editores: tusitio/#editar abre el formulario de inicio de sesión.
 // Con "#" funciona en cualquier hosting sin configurar redirecciones.
@@ -98,6 +42,11 @@ function App() {
   const { editor } = useSesion()
   const publicacion = usePublicacion(editor)
   const [acceso, setAcceso] = useState(pideAcceso)
+
+  // Con sesión, la barra fija del editor ocupa la esquina superior: las pantallas bajan para no quedar debajo
+  useEffect(() => {
+    document.body.classList.toggle('con-sesion', editor !== null)
+  }, [editor])
 
   // Por si se escribe #editar con la página ya abierta
   useEffect(() => {
@@ -128,9 +77,23 @@ function App() {
       )
     }
 
+    if (esMatrizAspectos(vista)) {
+      const { titulo, modulo } = MATRICES_ASPECTOS[vista]
+      return (
+        <PanelRegistros
+          key={vista}
+          titulo={titulo}
+          modulo={modulo}
+          onVolver={ir('ambiental')}
+          editable={editable}
+          onCambio={publicacion.revisar}
+        />
+      )
+    }
+
     switch (vista) {
       case 'informacion':
-        return <InformacionVisual onVolver={ir('inicio')} publicados={!editable} />
+        return <InformacionRiesgos onVolver={ir('riesgos')} publicados={!editable} />
       case 'riesgos':
         return (
           <Bienvenida
@@ -140,8 +103,23 @@ function App() {
               titulo: MATRICES_RIESGOS[v].titulo,
               onAbrir: ir(v),
             }))}
+            secundarias={[{ titulo: 'Información Visual', onAbrir: ir('informacion') }]}
           />
         )
+      case 'ambiental':
+        return (
+          <Bienvenida
+            titulo="Matriz de Aspectos e Impactos Ambientales"
+            onVolver={ir('inicio')}
+            opciones={(Object.keys(MATRICES_ASPECTOS) as MatrizAspectos[]).map((v) => ({
+              titulo: MATRICES_ASPECTOS[v].titulo,
+              onAbrir: ir(v),
+            }))}
+            secundarias={[{ titulo: 'Información Visual', onAbrir: ir('informacion_aspectos') }]}
+          />
+        )
+      case 'informacion_aspectos':
+        return <InformacionAspectos onVolver={ir('ambiental')} publicados={!editable} />
       case 'oportunidades':
         return (
           <PanelRegistros
@@ -153,26 +131,14 @@ function App() {
             onCambio={publicacion.revisar}
           />
         )
-      case 'aspectos':
-        return (
-          <PanelRegistros
-            key={vista}
-            titulo="Matriz de Aspectos e Impactos Ambientales"
-            modulo={moduloAspectos}
-            onVolver={ir('inicio')}
-            editable={editable}
-            onCambio={publicacion.revisar}
-          />
-        )
       default:
         return (
           <Bienvenida
             titulo="Sistema de Gestión Integral"
             opciones={[
               { titulo: 'Matriz de Riesgos', onAbrir: ir('riesgos') },
-              { titulo: 'Información Visual', onAbrir: ir('informacion') },
               { titulo: 'Evaluación de Oportunidades', onAbrir: ir('oportunidades') },
-              { titulo: 'Matriz de Aspectos e Impactos Ambientales', onAbrir: ir('aspectos') },
+              { titulo: 'Matriz de Aspectos e Impactos Ambientales', onAbrir: ir('ambiental') },
             ]}
           />
         )
@@ -188,8 +154,17 @@ function App() {
           pendiente={publicacion.pendiente}
           publicando={publicacion.publicando}
           error={publicacion.error}
-          onPublicar={publicacion.publicar}
+          onPublicar={publicacion.pedirPublicar}
           onCerrarSesion={cerrarSesion}
+        />
+      )}
+      {editor && publicacion.confirmando && (
+        <Confirmacion
+          titulo="Publicar cambios"
+          mensaje="Los cambios que hiciste serán visibles para todos en el modo lectura. ¿Quieres publicarlos?"
+          confirmar="Publicar"
+          onConfirmar={publicacion.publicar}
+          onCancelar={publicacion.cancelarPublicar}
         />
       )}
       {acceso && !editor && <InicioSesion onListo={cerrarAcceso} onCerrar={cerrarAcceso} />}

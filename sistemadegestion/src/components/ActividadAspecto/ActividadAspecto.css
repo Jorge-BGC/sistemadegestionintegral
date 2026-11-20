@@ -1,0 +1,41 @@
+.actividad-aspecto {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.actividad-aspecto > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.actividad-aspecto b {
+  font-weight: 650;
+  color: var(--text-h);
+}
+
+.actividad-aspecto-riesgo {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.actividad-aspecto-numero {
+  flex: none;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.actividad-aspecto-riesgo p {
+  margin: 0;
+  color: var(--text-h);
+}

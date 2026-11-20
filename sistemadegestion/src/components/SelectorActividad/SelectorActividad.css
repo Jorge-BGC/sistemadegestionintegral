@@ -1,0 +1,123 @@
+.selector-actividad {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Izquierda: actividad principal · derecha: subactividad */
+.selector-actividad-columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.selector-actividad label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.selector-actividad label > span,
+.selector-actividad-riesgo-titulo span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.selector-actividad .campo-select {
+  padding: 8px 10px;
+}
+
+.selector-actividad-vista {
+  margin: 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--edit-bg);
+  color: var(--text-h);
+  font-size: 14px;
+}
+
+.selector-actividad-riesgo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.selector-actividad-riesgo-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.selector-actividad-aviso {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.selector-actividad-pie {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.selector-actividad-principal,
+.selector-actividad-secundario {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    filter 0.15s ease,
+    background 0.15s ease;
+}
+
+.selector-actividad-principal {
+  border: none;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.selector-actividad-principal:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.selector-actividad-secundario {
+  align-self: flex-start;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-h);
+}
+
+.selector-actividad-secundario:hover {
+  background: var(--group-bg);
+}
+
+.selector-actividad-enlace {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.selector-actividad-enlace:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .selector-actividad-columnas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -17,11 +17,13 @@ export function useRegistros<R extends Registro, I, B, C>(
   const [editando, setEditando] = useState<Editando>(null)
   const [borrador, setBorrador] = useState<B>(modulo.vacio)
   const [guardando, setGuardando] = useState(false)
+  // Registro que espera confirmación para borrarse
+  const [porBorrar, setPorBorrar] = useState<R | null>(null)
 
   // Se recarga al iniciar o cerrar sesión: cambia entre borrador y publicado
   useEffect(() => {
     let vigente = true
-    Promise.all([modulo.cargarCatalogos(), modulo.listar(!editable)])
+    Promise.all([modulo.cargarCatalogos(!editable), modulo.listar(!editable)])
       .then(([c, r]) => {
         if (!vigente) return
         setCat(() => c)
@@ -80,8 +82,14 @@ export function useRegistros<R extends Registro, I, B, C>(
     }
   }
 
-  async function borrar(r: R) {
-    if (!window.confirm(modulo.confirmarBorrado(r))) return
+  // El botón borrar solo pregunta; confirmarBorrado() borra al aceptar
+  const pedirBorrar = (r: R) => setPorBorrar(r)
+  const cancelarBorrar = () => setPorBorrar(null)
+
+  async function confirmarBorrado() {
+    const r = porBorrar
+    setPorBorrar(null)
+    if (!r) return
     try {
       await modulo.borrar(r.id)
       setRegistros((rs) => rs.filter((x) => x.id !== r.id))
@@ -104,6 +112,9 @@ export function useRegistros<R extends Registro, I, B, C>(
     editar,
     cancelar,
     guardar,
-    borrar,
+    porBorrar,
+    pedirBorrar,
+    cancelarBorrar,
+    confirmarBorrado,
   }
 }

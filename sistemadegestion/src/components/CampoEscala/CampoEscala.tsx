@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import CampoSelect from '../CampoSelect/CampoSelect'
-import Icono from '../Icono/Icono'
+import BotonInfo from '../BotonInfo/BotonInfo'
 import Modal from '../Modal/Modal'
 import TablaEscala from '../TablaEscala/TablaEscala'
 import type { Escala } from '../../types/registros'
@@ -24,15 +24,7 @@ function CampoEscala({ valor, escala, onChange, etiqueta }: Props) {
         onChange={onChange}
         etiqueta={etiqueta}
       />
-      <button
-        type="button"
-        className="campo-escala-info"
-        onClick={() => setAyuda(true)}
-        title={`Ver niveles de ${etiqueta}`}
-        aria-label={`Ver niveles de ${etiqueta}`}
-      >
-        <Icono nombre="info" />
-      </button>
+      <BotonInfo etiqueta={`Ver niveles de ${etiqueta}`} onClick={() => setAyuda(true)} />
       {ayuda && (
         <Modal titulo={etiqueta} onCerrar={() => setAyuda(false)}>
           <TablaEscala escala={escala} />

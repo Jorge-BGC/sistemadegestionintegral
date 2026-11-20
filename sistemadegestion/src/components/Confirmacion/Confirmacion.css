@@ -1,0 +1,55 @@
+.confirmacion-mensaje {
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-h);
+}
+
+.confirmacion-pie {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.confirmacion-cancelar,
+.confirmacion-aceptar {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    filter 0.15s ease,
+    background 0.15s ease;
+}
+
+.confirmacion-cancelar {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-h);
+}
+
+.confirmacion-cancelar:hover {
+  background: var(--group-bg);
+}
+
+.confirmacion-aceptar {
+  border: none;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.confirmacion-aceptar.peligro {
+  background: #dc2626;
+  color: #fff;
+}
+
+.confirmacion-aceptar:hover {
+  filter: brightness(1.1);
+}
+
+.confirmacion-aceptar:focus-visible,
+.confirmacion-cancelar:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

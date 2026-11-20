@@ -6,6 +6,8 @@ export function usePublicacion(editor: string | null) {
   const [pendiente, setPendiente] = useState(false)
   const [publicando, setPublicando] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // La pregunta "¿Publicar?" está abierta
+  const [confirmando, setConfirmando] = useState(false)
 
   // Se llama al iniciar sesión y después de cada guardado o borrado
   const revisar = useCallback(() => {
@@ -20,8 +22,12 @@ export function usePublicacion(editor: string | null) {
 
   useEffect(revisar, [revisar])
 
+  // El botón solo abre la confirmación; publicar() corre al aceptarla
+  const pedirPublicar = () => setConfirmando(true)
+  const cancelarPublicar = () => setConfirmando(false)
+
   async function publicar() {
-    if (!window.confirm('¿Publicar los cambios? Serán visibles para todos en el modo lectura.')) return
+    setConfirmando(false)
     setPublicando(true)
     setError(null)
     try {
@@ -34,5 +40,5 @@ export function usePublicacion(editor: string | null) {
     }
   }
 
-  return { pendiente, publicando, error, revisar, publicar }
+  return { pendiente, publicando, error, confirmando, revisar, pedirPublicar, cancelarPublicar, publicar }
 }

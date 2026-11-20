@@ -1,0 +1,30 @@
+.barra-proporcion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Segmentos separados por 2px; extremos redondeados solo en los bordes de la barra */
+.barra-proporcion-pista {
+  display: flex;
+  gap: 2px;
+  height: 16px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--group-bg);
+}
+
+.barra-proporcion-pista span {
+  min-width: 3px;
+}
+
+.barra-proporcion .leyenda {
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.barra-proporcion .leyenda li {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+}

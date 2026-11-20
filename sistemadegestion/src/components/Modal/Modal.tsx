@@ -19,8 +19,9 @@ function Modal({ titulo, onCerrar, children, ancho }: Props) {
     const d = dialogo.current
     if (d && !d.open) {
       d.showModal()
-      // showModal enfoca el primer botón (la X); si hay un campo, mejor empezar ahí
-      d.querySelector<HTMLElement>('input, select, textarea')?.focus()
+      // showModal enfoca el primer botón (la X); mejor empezar en el elemento marcado
+      // con data-autofocus o, si no hay, en el primer campo
+      d.querySelector<HTMLElement>('[data-autofocus], input, select, textarea')?.focus()
     }
   }, [])
 

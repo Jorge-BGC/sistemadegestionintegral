@@ -78,3 +78,13 @@
   top: 24px;
   left: 24px;
 }
+
+/* Misma línea de acento que la del título, para separar las opciones secundarias */
+.bienvenida-separador {
+  width: 48px;
+  height: 3px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background: var(--accent);
+}

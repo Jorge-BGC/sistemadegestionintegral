@@ -1,0 +1,41 @@
+.campo-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.campo-opciones-opcion {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.campo-opciones-opcion:hover:not(.elegida) {
+  background: var(--group-bg);
+  color: var(--text-h);
+}
+
+.campo-opciones-opcion.elegida {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+.campo-opciones-opcion:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}

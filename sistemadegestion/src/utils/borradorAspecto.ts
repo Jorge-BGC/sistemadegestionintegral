@@ -4,7 +4,9 @@ import type { AspectoAmbiental, AspectoAmbientalInput, BorradorAspecto } from '.
 export function borradorAspectoVacio(): BorradorAspecto {
   return {
     proceso: '',
-    actividad: '',
+    actividad_principal: '',
+    actividad_sub: '',
+    riesgo_id: '',
     estado_proceso: '',
     aspecto: '',
     real_potencial: '',
@@ -21,7 +23,9 @@ export function borradorAspectoVacio(): BorradorAspecto {
 export function aBorradorAspecto(a: AspectoAmbiental): BorradorAspecto {
   return {
     proceso: a.proceso,
-    actividad: a.actividad,
+    actividad_principal: a.actividad_principal,
+    actividad_sub: a.actividad_sub,
+    riesgo_id: a.riesgo_id === null ? '' : String(a.riesgo_id),
     estado_proceso: a.estado_proceso ?? '',
     aspecto: a.aspecto,
     real_potencial: a.real_potencial ?? '',
@@ -38,7 +42,8 @@ export function aBorradorAspecto(a: AspectoAmbiental): BorradorAspecto {
 export function aDatosAspecto(b: BorradorAspecto): AspectoAmbientalInput {
   return {
     proceso: b.proceso,
-    actividad: b.actividad.trim(),
+    actividad_principal: b.actividad_principal,
+    actividad_sub: b.actividad_sub,
     estado_proceso: b.estado_proceso || null,
     aspecto: b.aspecto.trim(),
     real_potencial: b.real_potencial || null,
@@ -49,13 +54,14 @@ export function aDatosAspecto(b: BorradorAspecto): AspectoAmbientalInput {
     controles: aLista(b.controles),
     folio: b.folio.trim() || 'NA',
     efectividad: b.efectividad || null,
+    riesgo_id: b.riesgo_id ? Number(b.riesgo_id) : null,
   }
 }
 
 export function faltantesAspecto(b: BorradorAspecto) {
   const requeridos: [keyof BorradorAspecto, string][] = [
     ['proceso', 'Proceso'],
-    ['actividad', 'Actividad/Evento'],
+    ['actividad_sub', 'Actividad/Evento'],
     ['aspecto', 'Aspecto ambiental'],
     ['impacto', 'Impacto ambiental'],
     ['frecuencia', 'F'],

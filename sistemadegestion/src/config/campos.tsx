@@ -1,9 +1,7 @@
-import CampoAccion from '../components/CampoAccion/CampoAccion'
 import CampoEntrada from '../components/CampoEntrada/CampoEntrada'
 import CampoEscala from '../components/CampoEscala/CampoEscala'
 import CampoFecha from '../components/CampoFecha/CampoFecha'
 import CampoSelect from '../components/CampoSelect/CampoSelect'
-import type { NombreIcono } from '../components/Icono/Icono'
 import type { Cambiar, Escala } from '../types/registros'
 
 type OpcionesTexto = { lista?: string; placeholder?: string }
@@ -24,26 +22,6 @@ export function camposDe<B extends Record<string, string>, C>() {
           etiqueta={etiqueta}
           lista={lista}
           placeholder={placeholder}
-        />
-      ),
-
-    // Texto libre con un botón a la derecha; sin "onAccion" el botón queda deshabilitado
-    textoConBoton:
-      (
-        campo: Campo,
-        etiqueta: string,
-        boton: { icono: NombreIcono; texto: string; onAccion?: () => void },
-        placeholder?: string,
-      ) =>
-      (b: B, cambiar: Cambiar<B>) => (
-        <CampoAccion
-          valor={b[campo]}
-          onChange={(v) => cambiar(campo, v)}
-          etiqueta={etiqueta}
-          placeholder={placeholder}
-          icono={boton.icono}
-          textoBoton={boton.texto}
-          onAccion={boton.onAccion}
         />
       ),
 

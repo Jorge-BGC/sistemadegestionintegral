@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import Alerta from '../Alerta/Alerta'
 import BotonAgregar from '../BotonAgregar/BotonAgregar'
 import BotonIcono from '../BotonIcono/BotonIcono'
+import Confirmacion from '../Confirmacion/Confirmacion'
 import Encabezado from '../Encabezado/Encabezado'
 import TablaRegistros from '../TablaRegistros/TablaRegistros'
 import { useRegistros } from '../../hooks/useRegistros'
@@ -77,10 +78,21 @@ function PanelRegistros<R extends Registro, I, B, C>({
         guardando={r.guardando}
         cambiar={r.cambiar}
         onEditar={r.editar}
-        onBorrar={r.borrar}
+        onBorrar={r.pedirBorrar}
         onGuardar={r.guardar}
         onCancelar={r.cancelar}
       />
+
+      {r.porBorrar && (
+        <Confirmacion
+          titulo={`Borrar ${modulo.nombre}`}
+          mensaje={`${modulo.confirmarBorrado(r.porBorrar)} Esta acción no se puede deshacer.`}
+          confirmar="Borrar"
+          peligro
+          onConfirmar={r.confirmarBorrado}
+          onCancelar={r.cancelarBorrar}
+        />
+      )}
     </main>
   )
 }

@@ -92,3 +92,8 @@
   color: var(--alert-text);
   font-size: 13px;
 }
+
+/* Espacio para la barra en dashboards y en la Información Visual */
+body.con-sesion .dashboard {
+  padding-top: 72px;
+}

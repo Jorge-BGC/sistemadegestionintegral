@@ -4,6 +4,7 @@ import { supabase } from './supabase'
 // Los editores trabajan sobre la tabla (borrador); el modo lectura lee <tabla>_publicados,
 // que solo cambia con "Publicar cambios".
 // "filtro" limita el listado a las filas con esos valores (p. ej. { proceso: "Manufactura EPS" })
+// y se agrega a cada fila nueva, para que quede dentro de ese mismo filtro
 export function tablaRegistros<R, I extends object>(
   tabla: string,
   columnas: string,
@@ -17,7 +18,7 @@ export function tablaRegistros<R, I extends object>(
       return data as unknown as R[]
     },
     crear: async (datos: I): Promise<R> => {
-      const { data, error } = await supabase.from(tabla).insert(datos).select(columnas).single()
+      const { data, error } = await supabase.from(tabla).insert({ ...datos, ...filtro }).select(columnas).single()
       if (error) throw new Error(error.message)
       return data as unknown as R
     },

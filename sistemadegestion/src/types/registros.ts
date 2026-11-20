@@ -22,6 +22,12 @@ export type Nivel = {
   descripcion: string
 }
 
+// Valor de catálogo clasificado (Benéfico / Adverso); tipo null si aún no se clasificó
+export type OpcionConTipo = {
+  nombre: string
+  tipo: string | null
+}
+
 export type Cambiar<B> = (campo: keyof B, valor: string) => void
 
 export const NUEVO = 'nuevo'
@@ -49,7 +55,8 @@ export type Modulo<R extends Registro, I, B, C> = {
   textoVacio: string
   grupos: Grupo<R, B, C>[]
   sugerencias: (cat: C) => [id: string, valores: string[]][]
-  cargarCatalogos: () => Promise<C>
+  // publicados: true en modo lectura (por si algún catálogo depende de datos publicados)
+  cargarCatalogos: (publicados: boolean) => Promise<C>
   // publicados: true en modo lectura (lo publicado), false para editores (el borrador)
   listar: (publicados: boolean) => Promise<R[]>
   crear: (datos: I) => Promise<R>

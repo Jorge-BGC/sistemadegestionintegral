@@ -1,0 +1,41 @@
+.tabla-destacados-contenedor {
+  overflow-x: auto;
+}
+
+.tabla-destacados {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tabla-destacados th {
+  white-space: nowrap;
+  padding: 0 10px 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--text);
+}
+
+.tabla-destacados td {
+  padding: 9px 10px 9px 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  color: var(--text-h);
+}
+
+.tabla-destacados tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-destacados-nivel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.tabla-destacados-principal {
+  min-width: 200px;
+}

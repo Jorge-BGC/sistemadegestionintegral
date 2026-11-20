@@ -9,12 +9,21 @@ export type OpcionInicio = {
 type Props = {
   titulo: string
   opciones: OpcionInicio[]
+  // Opciones aparte, debajo de una línea separadora (p. ej. Información Visual)
+  secundarias?: OpcionInicio[]
   // Sin onVolver es la portada; con onVolver es un submenú
   onVolver?: () => void
 }
 
 // Pantalla de menú: título centrado y un botón por cada opción
-function Bienvenida({ titulo, opciones, onVolver }: Props) {
+function Bienvenida({ titulo, opciones, secundarias, onVolver }: Props) {
+  const botones = (os: OpcionInicio[]) =>
+    os.map((o) => (
+      <button key={o.titulo} type="button" className="bienvenida-boton" onClick={o.onAbrir}>
+        {o.titulo}
+      </button>
+    ))
+
   return (
     <main className="bienvenida">
       {onVolver && (
@@ -23,13 +32,13 @@ function Bienvenida({ titulo, opciones, onVolver }: Props) {
         </div>
       )}
       <h1>{titulo}</h1>
-      <div className="bienvenida-acciones">
-        {opciones.map((o) => (
-          <button key={o.titulo} type="button" className="bienvenida-boton" onClick={o.onAbrir}>
-            {o.titulo}
-          </button>
-        ))}
-      </div>
+      <div className="bienvenida-acciones">{botones(opciones)}</div>
+      {secundarias && secundarias.length > 0 && (
+        <>
+          <hr className="bienvenida-separador" />
+          <div className="bienvenida-acciones">{botones(secundarias)}</div>
+        </>
+      )}
     </main>
   )
 }

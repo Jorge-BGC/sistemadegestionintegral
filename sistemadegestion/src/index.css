@@ -15,6 +15,22 @@
   --alert-bg: #fef2f2;
   --alert-text: #991b1b;
 
+  /* Niveles de riesgo: colores oficiales de evaluacion_riesgos (iguales en tema claro y oscuro) */
+  --nivel-extremo: #ff0000;
+  --nivel-alto: #e36c0a;
+  --nivel-importante: #fac090;
+  --nivel-moderado: #ffff00;
+  --nivel-bajo: #ffffff;
+  /* Significancia de aspectos (evaluacion_aia); "alto" y "bajo" comparten color con riesgos */
+  --nivel-critico: #ff0000;
+  --nivel-medio: #ffff00;
+
+  /* Estados de efectividad de controles (validados para daltonismo; siempre con etiqueta) */
+  --estado-bien: #1f8a52;
+  --estado-proceso: #c08a1a;
+  --estado-mal: #cf3f2e;
+  --estado-neutro: #c3c9d1;
+
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
 
   font: 16px/145% var(--sans);
@@ -44,6 +60,10 @@
     --on-accent: #0d1f14;
     --alert-bg: #3b1d1d;
     --alert-text: #fecaca;
+    --estado-bien: #25945a;
+    --estado-proceso: #c99320;
+    --estado-mal: #e04a3a;
+    --estado-neutro: #454d55;
   }
 }
 

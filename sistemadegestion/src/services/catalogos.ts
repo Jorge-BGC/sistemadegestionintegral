@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import type { Escala, Rango } from '../types/registros'
+import type { Escala, OpcionConTipo, Rango } from '../types/registros'
 
 // Lectores genéricos de catálogos; cada módulo decide qué tablas usa
 
@@ -37,4 +37,11 @@ export async function rangos(tabla: string): Promise<Rango[]> {
     const m = /(\d+)\D+(\d+)/.exec(fila.rango)
     return m ? [{ min: Number(m[1]), max: Number(m[2]), descripcion: fila.descripcion }] : []
   })
+}
+
+// Catálogo de nombres clasificados como Benéfico o Adverso (aspecto_aia, impacto_aia)
+export async function nombresConTipo(tabla: string): Promise<OpcionConTipo[]> {
+  const { data, error } = await supabase.from(tabla).select('nombre, tipo').order('nombre')
+  if (error) throw new Error(`Tabla "${tabla}": ${error.message}`)
+  return data as OpcionConTipo[]
 }
